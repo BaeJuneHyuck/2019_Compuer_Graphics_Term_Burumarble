@@ -7,6 +7,9 @@ from OpenGL.GLU import *
 from OpenGL.GLUT import *
 from PIL import Image
 
+X_RESOLUTION = 800
+Y_RESOLUTION = 800
+
 class GameManager():
     """게임을 관리하는 클래스"""
     def __init__(self):
@@ -51,7 +54,8 @@ class GameManager():
         gluPerspective(60.0, 1.0, 0.1, 1000)
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
-        gluLookAt(32, 32, 32, 10, 10, 0, 0, 0, 1)
+#        gluLookAt(25, -25, 25, 10, 10, 0, 0, 0, 1)
+        gluLookAt(15, -15, 20, 10, 10, 0, 0, 0, 1)
 
         for index in range(16):
             self.board[index].draw()
@@ -66,12 +70,13 @@ class GameManager():
     def gameStart(self):
         glutInit(sys.argv)
         glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH)
-        glutInitWindowSize(1024, 1024)
+        glutInitWindowSize(X_RESOLUTION, Y_RESOLUTION)
         glutInitWindowPosition(100, 100)
         glutCreateWindow(b"Burumarble!")
         self.GLInit()
+        self.gameInit()
         glutDisplayFunc(self.display)
-        #glutIdleFunc(self.display)
+        # glutIdleFunc(self.display)
         glutMouseFunc(self.mouseClick)
         glutMainLoop()
 
