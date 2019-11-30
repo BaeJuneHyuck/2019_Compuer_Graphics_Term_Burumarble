@@ -82,5 +82,6 @@ class Play_State():
 
         for index in range(16):
             self.board[index].draw()
+        self.board[0].drawDice()
 
         glPopMatrix()

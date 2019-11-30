@@ -57,6 +57,8 @@ class GameManager():
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
+
+
         Play_State.State_Init(self)
 
 
