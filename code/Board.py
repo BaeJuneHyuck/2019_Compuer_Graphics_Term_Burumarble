@@ -1,6 +1,7 @@
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
+import numpy as np
 
 class Board():
     """ 게임이 이뤄질 보드 """
@@ -24,6 +25,86 @@ class Board():
         # x = pos
         # y = 5-pos....
 
-    def draw(self):
-        glBegin(GL_QUADS)
+    def draw(self, index):
+
+        if(index >= 0 and index < 5) :
+            # glBindTexture(GL_TEXTURE_2D, texArr[0])
+            glBegin(GL_QUADS)
+            glNormal3f(0, 0, 1)
+            glTexCoord2f(0, 0)
+            glVertex3f(index*4, 0, 0)
+            glTexCoord2f(0, 1)
+            glVertex3f((index+1)*4, 0, 0)
+            glTexCoord2f(1, 1)
+            glVertex3f((index+1)*4, 4, 0)
+            glTexCoord2f(1, 0)
+            glVertex3f(index*4, 4, 0)
+            glEnd()
+
+            #glBindTexture(GL_TEXTURE_2D, texArr[1])
+            glBegin(GL_QUADS)
+            glNormal3f(1, 0, 0)
+            glTexCoord2f(0, 0)
+            glVertex3f(index*4, 0, 0)
+            glTexCoord2f(0, 1)
+            glVertex3f((index+1)*4, 0, 0)
+            glTexCoord2f(1, 1)
+            glVertex3f((index+1)*4, 0, 2)
+            glTexCoord2f(1, 0)
+            glVertex3f(index*4, 0, 2)
+            glEnd()
+
+            #glBindTexture(GL_TEXTURE_2D, texArr[2])
+            glBegin(GL_QUADS)
+            glNormal3f(0, 0, -1)
+            glTexCoord2f(0, 0)
+            glVertex3f((index+1)*4, 0, 0)
+            glTexCoord2f(0, 1)
+            glVertex3f((index+1)*4, 4, 0)
+            glTexCoord2f(1, 1)
+            glVertex3f((index + 1) * 4, 4, 2)
+            glTexCoord2f(1, 0)
+            glVertex3f((index + 1) * 4, 0, 2)
+            glEnd()
+
+            #glBindTexture(GL_TEXTURE_2D, texArr[3])
+            glBegin(GL_QUADS)
+            glNormal3f(-1, 0, 0)
+            glTexCoord2f(0, 0)
+            glVertex3f((index + 1) * 4, 4, 0)
+            glTexCoord2f(0, 1)
+            glVertex3f(index*4, 4, 0)
+            glTexCoord2f(1, 1)
+            glVertex3f(index * 4, 4, 2)
+            glTexCoord2f(1, 0)
+            glVertex3f((index + 1) * 4, 4, 2)
+            glEnd()
+
+            #glBindTexture(GL_TEXTURE_2D, texArr[4])
+            glBegin(GL_QUADS)
+            glNormal3f(0, -1, 0)
+            glTexCoord2f(0, 0)
+            glVertex3f(index*4, 4, 0)
+            glTexCoord2f(0, 1)
+            glVertex3f(index*4, 0, 0)
+            glTexCoord2f(1, 1)
+            glVertex3f(index*4, 0, 2)
+            glTexCoord2f(1, 0)
+            glVertex3f(index*4, 4, 2)
+            glEnd()
+
+            #glBindTexture(GL_TEXTURE_2D, texArr[5])
+            glBegin(GL_QUADS)
+            glNormal3f(0, 1, 0)
+            glTexCoord2f(0, 0)
+            glVertex3f(index*4, 0, 2)
+            glTexCoord2f(0, 1)
+            glVertex3f((index+1)*4, 0, 2)
+            glTexCoord2f(1, 1)
+            glVertex3f((index+1)*4, 4, 2)
+            glTexCoord2f(1, 0)
+            glVertex3f(index*4, 4, 2)
+            glEnd()
+
+        glFlush()
 
