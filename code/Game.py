@@ -21,10 +21,23 @@ class GameManager():
         self.stage = 0
 
     def gameInit(self):
-        # make game board 0~19
+        # make game board 0~16
         self.board.append(Board(0, 1, "정문"))
-        self.board.append(Board(1, 0, "대학본부"))
-        self.board.append(Board(2, 0, "대학본부"))
+        self.board.append(Board(1, 0, "넉터"))
+        self.board.append(Board(2, 0, "제6 공학관"))
+        self.board.append(Board(3, 0, "인문관"))
+        self.board.append(Board(4, 0, "대학본부"))
+        self.board.append(Board(5, 0, "제2 공학관"))
+        self.board.append(Board(6, 0, "문창회관"))
+        self.board.append(Board(7, 0, "자연대 연구실험동"))
+        self.board.append(Board(8, 0, "새벽벌도서관"))
+        self.board.append(Board(9, 0, "사회관"))
+        self.board.append(Board(10, 0, "금정회관"))
+        self.board.append(Board(11, 0, "법학관"))
+        self.board.append(Board(12, 0, "테니스장"))
+        self.board.append(Board(13, 0, "제 1도서관"))
+        self.board.append(Board(14, 0, "무지개문"))
+        self.board.append(Board(15, 0, "건설관"))
 
         # player setting
         for player_no in range(4):

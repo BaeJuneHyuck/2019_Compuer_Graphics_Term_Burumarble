@@ -7,7 +7,7 @@ class Board():
     """ 게임이 이뤄질 보드 """
     def __init__(self, pos, type,  text):
         super().__init__()
-        # 시작지점 0 부터 끝지점 19 까지 순서대로 pos 번호 부여
+        # 시작지점 0 부터 끝지점 25 까지 순서대로 pos 번호 부여
         self.pos = pos
 
         # type 0 일반적인 땅(건물 구입가능한)
