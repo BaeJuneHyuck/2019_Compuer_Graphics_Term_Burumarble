@@ -38,10 +38,10 @@ class GameManager():
         gluPerspective(60.0, 1.0, 0.1, 1000)
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
-        gluLookAt(0, 8, 8, 0, 0, 0, 0, 1, 0)
+        gluLookAt(0, 32, 32, 0, 0, 0, 0, 1, 0)
 
         for index in range(3):
-            self.board[index].draw()
+            self.board[index].draw(index)
 
     def GLInit(self):
         # clear color setting
