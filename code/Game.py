@@ -1,6 +1,7 @@
 from SimCamera import *
 from Board import *
 from Dice import *
+from Play_State import *
 from Character import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -19,6 +20,7 @@ class GameManager():
         self.current_turn = 0
         self.camera = Camera()
         self.player = []
+        self.state = Play_State()
         # 각 플레이어의 턴을 스테이지로 나눠서 처리
         # 주사위 굴리기전, 이동애니메이션(시점변경), 이동후액션(시점복귀)
         self.stage = 0
@@ -54,11 +56,9 @@ class GameManager():
         gluPerspective(60.0, 1.0, 0.1, 1000)
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
-#        gluLookAt(25, -25, 25, 10, 10, 0, 0, 0, 1)
-        gluLookAt(15, -15, 20, 10, 10, 0, 0, 0, 1)
 
-        for index in range(16):
-            self.board[index].draw()
+        Play_State.State_Init(self)
+
 
     def GLInit(self):
         # clear color setting
