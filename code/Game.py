@@ -31,22 +31,34 @@ class GameManager():
             self.player.append(Player(player_no))
 
     def display(self):
-        pass
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
+        glMatrixMode(GL_PROJECTION)
+        glLoadIdentity()
+        gluPerspective(60.0, 1.0, 0.1, 1000)
+        glMatrixMode(GL_MODELVIEW)
+        glLoadIdentity()
+        gluLookAt(0, 8, 8, 0, 0, 0, 0, 1, 0)
+
+        for index in range(3):
+            self.board[index].draw()
 
     def GLInit(self):
         # clear color setting
-        glClearColor(0, 0, 0, 1)
+        glClearColor(0, 0, 1, 0)
+        glEnable(GL_COLOR_MATERIAL)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_TEXTURE_2D)
 
     def gameStart(self):
-        glutInit()
+        glutInit(sys.argv)
         glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH)
         glutInitWindowSize(1024, 1024)
         glutInitWindowPosition(100, 100)
         glutCreateWindow(b"Burumarble!")
         self.GLInit()
         glutDisplayFunc(self.display)
+        glutIdleFunc(self.display)
         glutMouseFunc(self.mouseClick)
         glutMainLoop()
 
