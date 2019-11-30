@@ -51,10 +51,10 @@ class GameManager():
         gluPerspective(60.0, 1.0, 0.1, 1000)
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
-        gluLookAt(5, 32, 32, 0, 0, 0, 0, 1, 0)
+        gluLookAt(32, 32, 32, 10, 10, 0, 0, 0, 1)
 
-        for index in range(3):
-            self.board[index].draw(index)
+        for index in range(16):
+            self.board[index].draw()
 
     def GLInit(self):
         # clear color setting
@@ -71,7 +71,7 @@ class GameManager():
         glutCreateWindow(b"Burumarble!")
         self.GLInit()
         glutDisplayFunc(self.display)
-        glutIdleFunc(self.display)
+        #glutIdleFunc(self.display)
         glutMouseFunc(self.mouseClick)
         glutMainLoop()
 
