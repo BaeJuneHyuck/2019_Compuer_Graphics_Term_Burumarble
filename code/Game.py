@@ -21,6 +21,8 @@ class GameManager():
         self.player = []
         self.x_resolution = 800
         self.y_resolution = 800
+
+        print("loading textures...")
         self.state = PlayState(self.camera, self.x_resolution, self.y_resolution)
         # 각 플레이어의 턴을 스테이지로 나눠서 처리
         # 주사위 굴리기전, 이동애니메이션(시점변경), 이동후액션(시점복귀)
@@ -49,6 +51,9 @@ class GameManager():
         for player_no in range(4):
             self.player.append(Player(player_no))
 
+        # load textures
+
+
     def display(self):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glMatrixMode(GL_PROJECTION)
@@ -66,7 +71,6 @@ class GameManager():
         glViewport(0, 0, self.x_resolution, self.y_resolution)
         glPushMatrix()
         self.camera.applyCamera()
-        print("{} {} ".format(self.x_resolution, self.y_resolution))
 
         for index in range(16):
             self.board[index].draw()
@@ -79,10 +83,9 @@ class GameManager():
         self.x_resolution = w
         self.y_resolution = h
         self.state.setWidthHeight(w, h)
-        glViewport(0, 0, w,h);
+        glViewport(0, 0, w, h);
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-
 
     def GLInit(self):
         # clear color setting
@@ -95,13 +98,13 @@ class GameManager():
         glutInit(sys.argv)
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
         glutInitWindowSize(self.x_resolution, self.y_resolution)
-        glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)-self.x_resolution)//2, 0)
+        glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH) - self.x_resolution) // 2, 0)
         glutCreateWindow(b"Burumarble!")
         self.GLInit()
         self.gameInit()
         glutDisplayFunc(self.display)
-        #glutReshapeFunc(self.reshape)
-        #glutIdleFunc(self.)
+        # glutReshapeFunc(self.reshape)
+        # glutIdleFunc(self.)
         glutMouseFunc(self.mouseClick)
         glutMouseWheelFunc(self.mouseWheel)
         glutMotionFunc(self.mouseMove)
@@ -115,16 +118,16 @@ class GameManager():
             if x >= 340 and x < 460 and y >= 720:
                 print("button click!!")
 
-    def mouseMove(self, x, y):
-        dx = self.prev_click_x - x
-        dy = self.prev_click_y - y
-        print("drag  dx={}, dy={}".format(dx, dy))
-        self.prev_click_x = x
-        self.prev_click_y = y
-        self.camera.rotate(dx,dy)
+    def mouseMove(self, current_x, current_y):
+        dx = self.prev_click_x - current_x
+        dy = self.prev_click_y - current_y
+        if dx >= 5 or dx <= -5:
+            self.camera.rotate(dx, dy)
+            glutPostRedisplay()
+        self.prev_click_x = current_x
+        self.prev_click_y = current_y
 
     def mouseWheel(self, button, state, x, y):
-        # wheel UP : button =3, Down : button=4
         if state == 1:
             self.camera.zoomIn()
         elif state == -1:

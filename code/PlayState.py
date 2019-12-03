@@ -1,8 +1,8 @@
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
-from Game import *
-
+import PIL as Image
+import numpy as np
 
 class PlayState():
 
@@ -10,6 +10,8 @@ class PlayState():
         self.camera = _camera;
         self.width = w
         self.height = h
+#        self.texArr = textures
+
 
     def setWidthHeight(self, w, h):
         self.width = w
@@ -81,7 +83,18 @@ class PlayState():
         glViewport(340, 0, 120, 80)
         glPushMatrix()
         gluLookAt(0, 0, 1, 0, 0, 0, 0, 1, 0)
-        self.drawBackground()
-        self.pictureSpace()
+        glBegin(GL_QUADS)
+
+        glNormal3f(0, 0, 1)
+        glTexCoord2f(0, 0)
+        glVertex3f(-16, -16, 0.5)
+        glTexCoord2f(0, 1)
+        glVertex3f(0, -16, 0.5)
+        glTexCoord2f(1, 1)
+        glVertex3f(0, 0, 0.5)
+        glTexCoord2f(1, 0)
+        glVertex3f(-16, 0, 0.5)
+        glEnd()
+
         glPopMatrix()
 
