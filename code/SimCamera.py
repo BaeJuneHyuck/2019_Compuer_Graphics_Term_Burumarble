@@ -21,15 +21,17 @@ def rotate(v, angle, axis) :
 class Camera :
 
     def __init__(self):  #constructor
-        self.loc = np.array([0.0, 0.0,  0.0])
-        self.tar = np.array([0.0, 0.0, 0.0])
-        self.up  = np.array([0.0, 1.0,  0.0])
+        self.loc_origin = np.array([15.0, -15.0, 20.0])
+        self.loc = np.array([15.0, -15.0, 20.0])
+        self.tar = np.array([10.0, 10.0, 0.0])
+        self.up  = np.array([0.0, 0.0,  1.0])
         self.right = np.array([1.0, 0.0, 0.0])
         self.dir = np.array([0.0, 0.0, -1.0])
         self.asp = 1.0
         self.fov = 60
         self.near= 0.1
         self.far = 100.0
+        self.zoom = 1.0
 
     def setCameraLoc(self, loc):
         self.loc = loc
@@ -85,10 +87,21 @@ class Camera :
         self.moveRight(-step)
 
     def zoomIn(self):
-        self.fov *= 0.95
+        self.zoom = self.zoom - 0.05
+        if self.zoom < 0.4:
+            self.zoom = 0.4
+        self.adjust()
 
     def zoomOut(self):
-        self.fov *= 1.05
+        self.zoom = self.zoom + 0.05
+        if self.zoom > 2.0:
+            self.zoom = 2.0
+        self.adjust()
+
+    def adjust(self):
+        print(self.loc)
+        self.loc = self.zoom * self.loc_origin
+        self.applyCamera()
 
     def turnRight(self, angle=0.01):
         self.right = rotate(self.right, -angle, self.up)
@@ -105,3 +118,15 @@ class Camera :
 
     def turnDown(self, angle=0.01):
         self.turnUp(-angle)
+
+    def rotate(self, dx, dy):
+        if dx > 0 and dy > 0:
+            print("c1")
+            self.moveRight()
+        elif dx > 0 and dy < 0:
+            print("c2")
+            self.moveLeft()
+        elif dx < 0 and dy > 0:
+            print("c3")
+        elif dx < 0 and dy < 0:
+            print("c4")
