@@ -6,11 +6,11 @@ import numpy as np
 
 class PlayState():
 
-    def __init__(self, _camera, w, h):
+    def __init__(self, _camera, w, h, textures):
         self.camera = _camera;
         self.width = w
         self.height = h
-#        self.texArr = textures
+        self.texArr = textures
 
 
     def setWidthHeight(self, w, h):
@@ -80,21 +80,21 @@ class PlayState():
         glPopMatrix()
 
         # 버튼
-        glViewport(340, 0, 120, 80)
+        glViewport(350, 0, 100, 100)
         glPushMatrix()
-        gluLookAt(0, 0, 1, 0, 0, 0, 0, 1, 0)
-        glBegin(GL_QUADS)
+        gluLookAt(-8, -8, 15, -8, -8, 0.5, 0, 1, 0)
 
+        glBindTexture(GL_TEXTURE_2D, self.texArr[17])
+        glBegin(GL_QUADS)
         glNormal3f(0, 0, 1)
-        glTexCoord2f(0, 0)
-        glVertex3f(-16, -16, 0.5)
         glTexCoord2f(0, 1)
-        glVertex3f(0, -16, 0.5)
+        glVertex3f(-16, -16, 0.5)
         glTexCoord2f(1, 1)
-        glVertex3f(0, 0, 0.5)
+        glVertex3f(0, -16, 0.5)
         glTexCoord2f(1, 0)
+        glVertex3f(0, 0, 0.5)
+        glTexCoord2f(0, 0)
         glVertex3f(-16, 0, 0.5)
         glEnd()
-
         glPopMatrix()
 

@@ -6,6 +6,8 @@ from Character import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
+
+import numpy as np
 from PIL import Image
 
 
@@ -16,43 +18,66 @@ class GameManager():
         self.prev_click_x = 0
         self.prev_click_y = 0
         self.board = []
+        self.dice = None
         self.current_turn = 0
         self.camera = Camera()
         self.player = []
         self.x_resolution = 800
         self.y_resolution = 800
 
-        print("loading textures...")
-        self.state = PlayState(self.camera, self.x_resolution, self.y_resolution)
         # 각 플레이어의 턴을 스테이지로 나눠서 처리
         # 주사위 굴리기전, 이동애니메이션(시점변경), 이동후액션(시점복귀)
         self.stage = 0
 
+    def loadImage(self, imageName):
+        img = Image.open(imageName)
+        img_data = np.array(list(img.getdata()), np.uint8)
+        return img.size[0], img.size[1], img_data
+
+    def setTexture(self, texArr, idx, fileName, option):
+        glBindTexture(GL_TEXTURE_2D, texArr[idx])
+        imgW, imgH, myImage = self.loadImage(fileName)
+        # print(imgW, imgH, myImage)
+
+        # texture image 생성
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,
+                     imgW, imgH, 0, option,
+                     GL_UNSIGNED_BYTE, myImage)
+
+        # texture 매핑 옵션 설정
+        glTexParameterf(GL_TEXTURE_2D,
+                        GL_TEXTURE_WRAP_S, GL_CLAMP)
+        glTexParameterf(GL_TEXTURE_2D,
+                        GL_TEXTURE_WRAP_T, GL_REPEAT)
+        glTexParameterf(GL_TEXTURE_2D,
+                        GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+        glTexParameterf(GL_TEXTURE_2D,
+                        GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+
     def gameInit(self):
         # make game board 0~16
-        self.board.append(Board(0, 1, "정문"))
-        self.board.append(Board(1, 0, "넉터"))
-        self.board.append(Board(2, 0, "제6 공학관"))
-        self.board.append(Board(3, 0, "인문관"))
-        self.board.append(Board(4, 0, "대학본부"))
-        self.board.append(Board(5, 0, "제2 공학관"))
-        self.board.append(Board(6, 0, "문창회관"))
-        self.board.append(Board(7, 0, "자연대 연구실험동"))
-        self.board.append(Board(8, 0, "새벽벌도서관"))
-        self.board.append(Board(9, 0, "사회관"))
-        self.board.append(Board(10, 0, "금정회관"))
-        self.board.append(Board(11, 0, "법학관"))
-        self.board.append(Board(12, 0, "테니스장"))
-        self.board.append(Board(13, 0, "제 1도서관"))
-        self.board.append(Board(14, 0, "무지개문"))
-        self.board.append(Board(15, 0, "건설관"))
+        self.board.append(Board(0, 1, "정문", self.texArr))
+        self.board.append(Board(1, 0, "넉터", self.texArr))
+        self.board.append(Board(2, 0, "제6 공학관", self.texArr))
+        self.board.append(Board(3, 0, "인문관", self.texArr))
+        self.board.append(Board(4, 0, "대학본부", self.texArr))
+        self.board.append(Board(5, 0, "제2 공학관", self.texArr))
+        self.board.append(Board(6, 0, "문창회관", self.texArr))
+        self.board.append(Board(7, 0, "자연대 연구실험동", self.texArr))
+        self.board.append(Board(8, 0, "새벽벌도서관", self.texArr))
+        self.board.append(Board(9, 0, "사회관", self.texArr))
+        self.board.append(Board(10, 0, "금정회관", self.texArr))
+        self.board.append(Board(11, 0, "법학관", self.texArr))
+        self.board.append(Board(12, 0, "테니스장", self.texArr))
+        self.board.append(Board(13, 0, "제 1도서관", self.texArr))
+        self.board.append(Board(14, 0, "무지개문", self.texArr))
+        self.board.append(Board(15, 0, "건설관", self.texArr))
+
+        self.dice = Dice(self.texArr)
 
         # player setting
         for player_no in range(4):
             self.player.append(Player(player_no))
-
-        # load textures
-
 
     def display(self):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -72,10 +97,14 @@ class GameManager():
         glPushMatrix()
         self.camera.applyCamera()
 
+        # draw dice
+        self.dice.draw()
+
+        # draw map
         for index in range(16):
             self.board[index].draw()
-        self.board[0].drawDice()
         glPopMatrix()
+
         # double 버퍼 사용, glFlush() 대신 GLUTSwapBuffers()써서 깜빡거림 제거
         glutSwapBuffers()
 
@@ -94,8 +123,26 @@ class GameManager():
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_TEXTURE_2D)
 
+        print("loading textures...")
+
+        # 텍스처 로드
+        # 0 ~ 15 각 맵의 그림 텍스쳐
+        # 16 나무 텍스처
+        # 17 굴리기 버튼 텍스쳐
+        self.texArr = glGenTextures(18)
+        for i in range(0, 16):
+            if i <= 9:
+                path = "texture/board_0" + str(i) + ".jpg"
+            else:
+                path = "texture/board_" + str(i) + ".jpg"
+            self.setTexture(self.texArr, i, path, GL_RGB)
+        self.setTexture(self.texArr, 16, "texture/wood.jpg", GL_RGB)
+        self.setTexture(self.texArr, 17, "texture/dice_roll.jpg", GL_RGB)
+
+        self.state = PlayState(self.camera, self.x_resolution, self.y_resolution, self.texArr)
+
     def gameStart(self):
-        glutInit(sys.argv)
+        glutInit()
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
         glutInitWindowSize(self.x_resolution, self.y_resolution)
         glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH) - self.x_resolution) // 2, 0)
@@ -117,6 +164,7 @@ class GameManager():
             print("click x={}, y={}".format(x, y))
             if x >= 340 and x < 460 and y >= 720:
                 print("button click!!")
+                self.dice.roll()
 
     def mouseMove(self, current_x, current_y):
         dx = self.prev_click_x - current_x
