@@ -22,6 +22,8 @@ class GameManager():
         self.current_turn = 0
         self.camera = Camera()
         self.player = []
+        self.characters = []
+        self.char_moved = False
         self.x_resolution = 800
         self.y_resolution = 800
 
@@ -54,6 +56,79 @@ class GameManager():
         glTexParameterf(GL_TEXTURE_2D,
                         GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 
+    def display(self):
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glMatrixMode(GL_PROJECTION)
+        glLoadIdentity()
+        gluPerspective(60.0, 1.0, 0.1, 1000)
+
+        ''' draw game '''
+        glMatrixMode(GL_MODELVIEW)
+        glLoadIdentity()
+
+        # draw player state window
+        self.state.draw()
+
+        # draw gameboard
+        glViewport(0, 0, self.x_resolution, self.y_resolution)
+        glPushMatrix()
+        self.camera.applyCamera()
+
+        # draw dice
+        self.dice.draw()
+
+        # draw character
+        glDisable(GL_TEXTURE_2D)
+        if self.char_moved:
+            for index in range(4):
+                self.characters[index].draw()
+        glEnable(GL_TEXTURE_2D)
+
+        # draw map
+        for index in range(16):
+            self.board[index].draw()
+        glPopMatrix()
+
+        # double 버퍼 사용, glFlush() 대신 GLUTSwapBuffers()써서 깜빡거림 제거
+        glutSwapBuffers()
+
+    def reshape(self, w, h):
+        self.x_resolution = w
+        self.y_resolution = h
+        self.state.setWidthHeight(w, h)
+        glViewport(0, 0, w, h);
+        glMatrixMode(GL_PROJECTION)
+        glLoadIdentity()
+
+    def GLInit(self):
+        # clear color setting
+        glClearColor(0, 0, 1, 0)
+        glEnable(GL_COLOR_MATERIAL)
+        glEnable(GL_DEPTH_TEST)
+        glEnable(GL_TEXTURE_2D)
+        glDisable(GL_BLEND)
+        print("loading textures...")
+
+        # 텍스처 로드
+        # 0 ~ 15 각 맵의 그림 텍스쳐
+        # 16 나무 텍스처
+        # 17 굴리기 버튼 텍스쳐
+        # 18~ 23 : 주사위 1~6까지
+        self.texArr = glGenTextures(25)
+        for i in range(0, 16):
+            if i <= 9:
+                path = "texture/board_0" + str(i) + ".jpg"
+            else:
+                path = "texture/board_" + str(i) + ".jpg"
+            self.setTexture(self.texArr, i, path, GL_RGB)
+        self.setTexture(self.texArr, 16, "texture/wood.jpg", GL_RGB)
+        self.setTexture(self.texArr, 17, "texture/dice_roll.jpg", GL_RGB)
+        for i in range(18, 24):
+            path = "texture/dice_" + str(i-17) + ".jpg"
+            self.setTexture(self.texArr, i, path, GL_RGB)
+        # state screen
+        self.state = PlayState(self.camera, self.x_resolution, self.y_resolution, self.texArr)
+
     def gameInit(self):
         # make game board 0~16
         self.board.append(Board(0, 1, "정문", self.texArr))
@@ -79,67 +154,9 @@ class GameManager():
         for player_no in range(4):
             self.player.append(Player(player_no))
 
-    def display(self):
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        glMatrixMode(GL_PROJECTION)
-        glLoadIdentity()
-        gluPerspective(60.0, 1.0, 0.1, 1000)
-
-        ''' draw game '''
-        glMatrixMode(GL_MODELVIEW)
-        glLoadIdentity()
-
-        # draw player state window
-        self.state.draw()
-
-        # draw gameboard
-        glViewport(0, 0, self.x_resolution, self.y_resolution)
-        glPushMatrix()
-        self.camera.applyCamera()
-
-        # draw dice
-        self.dice.draw()
-
-        # draw map
-        for index in range(16):
-            self.board[index].draw()
-        glPopMatrix()
-
-        # double 버퍼 사용, glFlush() 대신 GLUTSwapBuffers()써서 깜빡거림 제거
-        glutSwapBuffers()
-
-    def reshape(self, w, h):
-        self.x_resolution = w
-        self.y_resolution = h
-        self.state.setWidthHeight(w, h)
-        glViewport(0, 0, w, h);
-        glMatrixMode(GL_PROJECTION)
-        glLoadIdentity()
-
-    def GLInit(self):
-        # clear color setting
-        glClearColor(0, 0, 1, 0)
-        glEnable(GL_COLOR_MATERIAL)
-        glEnable(GL_DEPTH_TEST)
-        glEnable(GL_TEXTURE_2D)
-
-        print("loading textures...")
-
-        # 텍스처 로드
-        # 0 ~ 15 각 맵의 그림 텍스쳐
-        # 16 나무 텍스처
-        # 17 굴리기 버튼 텍스쳐
-        self.texArr = glGenTextures(18)
-        for i in range(0, 16):
-            if i <= 9:
-                path = "texture/board_0" + str(i) + ".jpg"
-            else:
-                path = "texture/board_" + str(i) + ".jpg"
-            self.setTexture(self.texArr, i, path, GL_RGB)
-        self.setTexture(self.texArr, 16, "texture/wood.jpg", GL_RGB)
-        self.setTexture(self.texArr, 17, "texture/dice_roll.jpg", GL_RGB)
-
-        self.state = PlayState(self.camera, self.x_resolution, self.y_resolution, self.texArr)
+        # character setting
+        for player_no in range(4):
+            self.characters.append(Character(player_no, player_no))
 
     def gameStart(self):
         glutInit()
@@ -165,6 +182,7 @@ class GameManager():
             if x >= 340 and x < 460 and y >= 720:
                 print("button click!!")
                 self.dice.roll()
+                self.char_moved = not self.char_moved
 
     def mouseMove(self, current_x, current_y):
         dx = self.prev_click_x - current_x
