@@ -123,7 +123,6 @@ class Dice():
                 self.rotation_x += 45
                 self.rotation_y += 45
                 self.rotation_z += 45
-                print(self.z)
                 if self.z >= 14:
                     isTop = 1
             if isTop == 1 and isGround == 0:
@@ -131,8 +130,6 @@ class Dice():
                 self.rotation_x -= 45
                 self.rotation_y -= 45
                 self.rotation_z -= 45
-
-                print(self.z)
                 if self.z == 2:
                     if self.value == 1:
                         self.rotation_x = 0

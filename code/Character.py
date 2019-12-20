@@ -33,13 +33,13 @@ class Character():
         # 플레이어별로 캐릭터가 겹치지 않게 약간씩 다른위치로 이동
         self.coordinate_fix = [0, 0, 0]
         if player == 0:
-            self.coordinate_fix = [-1.5, -0.5, 1.5]
+            self.coordinate_fix = [-1.2, -0.5, 1.5]
         elif player == 1:
-            self.coordinate_fix = [1.5, -0.5, 1.5]
+            self.coordinate_fix = [1.0, -0.5, 1.5]
         elif player == 2:
-            self.coordinate_fix = [-1.5, 1.5, 1.5]
+            self.coordinate_fix = [-1.2, 1.2, 1.5]
         elif player == 3:
-            self.coordinate_fix = [1.5, 1.5, 1.5]
+            self.coordinate_fix = [1.0, 1.2, 1.5]
 
     def load(self):
         path = "src/char_human.obj"
@@ -109,7 +109,6 @@ class Character():
             glBegin(GL_POLYGON)
             vertices, normals, __ = face
             total_vertice = range(len(vertices))
-
             num += 1
             if num < 10:
                 glColor3f(self.color[self.player * 3], self.color[self.player * 3 + 1], self.color[self.player * 3 + 2])

@@ -21,7 +21,7 @@ class GameManager():
         self.prev_click_x = 0
         self.prev_click_y = 0
         self.board = []
-        self.building = []
+        self.buildings = []
         self.dice = None
         self.current_turn = 0
         self.camera = Camera()
@@ -86,17 +86,10 @@ class GameManager():
             self.characters[index].draw()
         glEnable(GL_TEXTURE_2D)
 
-        '''
         # draw building
-        glDisable(GL_TEXTURE_2D)
-        for index in range(len(self.building)):
-            self.building[index].draw()
         glEnable(GL_TEXTURE_2D)
-        '''
-        # draw Building
-        Building(self.characters[0].color, self.texArr).draw()
-
-
+        for index in range(len(self.buildings)):
+            self.buildings[index].draw()
         # draw map
         for index in range(16):
             self.board[index].draw()
@@ -180,7 +173,7 @@ class GameManager():
             self.characters.append(Character(player_no, player_no))
 
         for build_no in range(16):
-            self.building.append((Building(0, player_no)))
+            self.buildings.append((Building(build_no, self.texArr)))
 
     def gameStart(self):
         glutInit()
@@ -225,7 +218,7 @@ class GameManager():
 
     def nextStage(self):
         # 각 플레이어의 턴을 스테이지로 나눠서 처리
-        # 주사위 굴리기전, 이동애니메이션(시점변경)중, 이동후액션(시점복귀), 다시 주사위 굴리기전(플레이어 변경)
+        # 주사위 굴리기전, 이동애니메이션, 이동후 건물 확인, 다시 주사위 굴리기전(플레이어 변경)
         if self.stage == 0:
             self.dice_value = self.dice.roll()
             threading.Thread(target=self.checkDice).start()
@@ -233,13 +226,21 @@ class GameManager():
             self.characters[self.current_turn].setmove(self.dice_value)
             threading.Thread(target=self.checkMove).start()
         elif self.stage == 2:
-            pass
+            pos = self.characters[self.current_turn].pos
+            if self.buildings[pos].player == -1:
+                self.buildings[pos].player = self.current_turn
+                # 주인 없는땅 = 내 건물 생성
+                pass
+            else:
+                self.player[self.current_turn].money -= 1000
+
+            self.stage = 0
+            self.current_turn = (self.current_turn+1)%4
 
     def checkDice(self):
         # 스레드로 실행, 메인 함수랑 따로 계속 주사위를 체크. 땅에 닿으면 nextStage를 호출함
         while (self.dice.rolling == True):
             time.sleep(0.1)
-            pass
         self.stage += 1
         self.nextStage()
 
