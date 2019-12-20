@@ -38,7 +38,6 @@ class PlayState():
 
 
     def pictureSpace(self):
-        glBindTexture(GL_TEXTURE_2D, self.texArr[17])
         glBegin(GL_QUADS)
         #glColor3f(0, 0, 0.5)
         glNormal3f(0, 0, 1)
@@ -54,12 +53,9 @@ class PlayState():
 
     def goldTextureSpace(self):
         glBindTexture(GL_TEXTURE_2D, self.texArr[26])
-        #glBindTexture(GL_TEXTURE_2D, self.texArr[25])
         glBegin(GL_QUADS)
-        #glColor3f(0.5, 0, 0.5)
         glNormal3f(0, 0, 1)
         glTexCoord2f(0, 0)
-        #glColor3f(0.5, 0, 0.5)
         glVertex3f(-6.7, -16, 0)
         glTexCoord2f(0, 1)
         glVertex3f(0, -16, 0)
@@ -73,10 +69,8 @@ class PlayState():
         glColor3f(1, 1, 1)
         glDisable(GL_TEXTURE_2D)
         glBegin(GL_QUADS)
-        # glColor3f(0.5, 0, 0.5)
         glNormal3f(0, 0, 1)
         glTexCoord2f(0, 0)
-        # glColor3f(0.5, 0, 0.5)
         glVertex3f(-0, -15.7, 0.5)
         glTexCoord2f(0, 1)
         glVertex3f(16, -15.7, 0.5)
@@ -96,6 +90,9 @@ class PlayState():
         glPushMatrix()
         gluLookAt(0, 0, 28, 0, 0, 0, 0, 1, 0)
         self.goldTextureSpace()
+        '''해골 부분'''
+        #glBindTexture(GL_TEXTURE_2D, self.texArr[33])
+        glBindTexture(GL_TEXTURE_2D, self.texArr[30])
         self.pictureSpace()
         glColor3f(0.99, 0.65, 0.01)
         self.nameSpace()
@@ -115,6 +112,7 @@ class PlayState():
         glPushMatrix()
         gluLookAt(0, 0, 28, 0, 0, 0, 0, 1, 0)
         self.goldTextureSpace()
+        glBindTexture(GL_TEXTURE_2D, self.texArr[29])
         self.pictureSpace()
         glColor3f(0.4, 0.4, 1.0)
         self.nameSpace()
@@ -135,6 +133,7 @@ class PlayState():
         glPushMatrix()
         gluLookAt(0, 0, 28, 0, 0, 0, 0, 1, 0)
         self.goldTextureSpace()
+        glBindTexture(GL_TEXTURE_2D, self.texArr[32])
         self.pictureSpace()
         glColor3f(0, 0.6, 0)
         self.nameSpace()
@@ -153,6 +152,7 @@ class PlayState():
         glPushMatrix()
         gluLookAt(0, 0, 28, 0, 0, 0, 0, 1, 0)
         self.goldTextureSpace()
+        glBindTexture(GL_TEXTURE_2D, self.texArr[31])
         self.pictureSpace()
         glColor3f(1.0, 0.4, 0.4)
         self.nameSpace()

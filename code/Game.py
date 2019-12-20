@@ -123,7 +123,9 @@ class GameManager():
         # 25 : state 창
         # 26 : gold 사진 (금화 사진)
         #27~28 : bulinding 사진
-        self.texArr = glGenTextures(29)
+        #29~32 : 사용자 사진들
+        #33 : 해골 사진
+        self.texArr = glGenTextures(34)
         for i in range(0, 16):
             if i <= 9:
                 path = "texture/board_0" + str(i) + ".jpg"
@@ -139,6 +141,12 @@ class GameManager():
         self.setTexture(self.texArr, 26, "texture/gold.jpg", GL_RGB)
         self.setTexture(self.texArr, 27, "texture/FistBuilding_Forward.jpg", GL_RGB)
         self.setTexture(self.texArr, 28, "texture/FistBuilding_Side.jpg",GL_RGB)
+        self.setTexture(self.texArr, 29, "texture/PlayerStateImgBlue.jpg", GL_RGB)
+        self.setTexture(self.texArr, 30, "texture/PlayerStateImgYellow.jpg", GL_RGB)
+        self.setTexture(self.texArr, 31, "texture/PlayerStateImgRed.jpg", GL_RGB)
+        self.setTexture(self.texArr, 32, "texture/PlayerStateImgGreen.jpg", GL_RGB)
+        self.setTexture(self.texArr, 33, "texture/Die.jpg", GL_RGB)
+
         # state screen
         self.state = PlayState(self, self.camera, self.x_resolution, self.y_resolution, self.texArr)
 

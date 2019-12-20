@@ -3,9 +3,6 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 
 class Building():
-    vertexQuadArray = [(4.0, 4.0, 4.0), (4, -4, 4), (-4, -4, 4), (-4, 4, 4), (4, 4, -4), (4, -4, -4), (-4, -4, -4),
-                       (-4, 4, -4)]
-    vertexTraArray = [(5, 5, 5), (-5, 5, 5), (-5, 5, -5), (5, 5, -5), (0, 5, 0)]
     def __init__(self, pos, texArr):
         self.pos = pos
         self.player = -1
