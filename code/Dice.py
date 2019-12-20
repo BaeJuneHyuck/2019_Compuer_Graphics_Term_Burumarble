@@ -147,7 +147,7 @@ class Dice():
                         self.rotation_x = 90
                         self.rotation_y = 0
                         self.rotation_z = 0
-                    elif self.value == 113:
+                    elif self.value == 5:
                         self.rotation_x = 0
                         self.rotation_y = 90
                         self.rotation_z = 0

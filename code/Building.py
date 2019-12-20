@@ -41,16 +41,17 @@ class Building():
     # moveY 도 + 4 씩 하면 됨
     def firstBuilding(self, moveX, moveY, moveZ):
         # 정면 왼쪽 삼각형
+        glDisable(GL_TEXTURE_2D)
         glBegin(GL_TRIANGLES)
-        glColor3f(1, 1, 1)
+        glColor3f(self.color[self.player * 3], self.color[self.player * 3 + 1], self.color[self.player * 3 + 2])
         glVertex3f(-1 + moveX, -1 + moveY, 0.5 + moveZ)
         glVertex3f(-1 + moveX, 1 + moveY, 0.5 + moveZ)
         glVertex3f(moveX, moveY, 2 + moveZ)
         glEnd()
 
         # 정면 삼각형
+
         glBegin(GL_TRIANGLES)
-        glColor3f(1, 1, 1)
         glVertex3f(1 + moveX, -1 + moveY, 0.5 + moveZ)
         glVertex3f(-1 + moveX, -1 + moveY, 0.5 + moveZ)
         glVertex3f(moveX, moveY, 2 + moveZ)
@@ -58,7 +59,6 @@ class Building():
 
         # 정면 오른쪽 삼각형
         glBegin(GL_TRIANGLES)
-        glColor3f(1, 1, 1)
         glVertex3f(1 + moveX, 1 + moveY, 0.5 + moveZ)
         glVertex3f(1 + moveX, -1 + moveY, 0.5 + moveZ)
         glVertex3f(moveX, moveY, 2 + moveZ)
@@ -66,11 +66,12 @@ class Building():
 
         # 정면 맞은편 삼각형
         glBegin(GL_TRIANGLES)
-        glColor3f(1, 1, 1)
         glVertex3f(-1 + moveX, 1 + moveY, 0.5 + moveZ)
         glVertex3f(1 + moveX, 1 + moveY, 0.5 + moveZ)
         glVertex3f(moveX, moveY, 2 + moveZ)
+        glColor3f(1.0, 1.0, 1.0)
         glEnd()
+        glEnable(GL_TEXTURE_2D)
 
         # 건물 윗면
         glBegin(GL_QUADS)

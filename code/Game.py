@@ -235,7 +235,7 @@ class GameManager():
                 self.player[self.current_turn].money -= 1000
 
             self.stage = 0
-            self.current_turn = (self.current_turn+1)%4
+            self.current_turn = (self.current_turn + 1) % 4
 
     def checkDice(self):
         # 스레드로 실행, 메인 함수랑 따로 계속 주사위를 체크. 땅에 닿으면 nextStage를 호출함
