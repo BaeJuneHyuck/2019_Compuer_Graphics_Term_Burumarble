@@ -4,13 +4,18 @@ from OpenGL.GLUT import *
 import time
 import random
 
+isTop = 0
+isGround = 0
+
 class Dice():
     """ 주사위 굴리기(stage 1)에서 보여질 주사위 """
     def __init__(self, textures):
         self.texArr = textures
         self.value = 1
-        self.z = 0.0
-        self.rotation = 0.0
+        self.z = 2.0
+        self.rotation_x = 0.0
+        self.rotation_y = 0.0
+        self.rotation_z = 0.0
         self.textures = []
         self.rolling = False
 
@@ -22,8 +27,12 @@ class Dice():
 
     def draw(self):
         glPushMatrix()
-        glTranslatef(0, 0, self.z)
-        glRotatef(self.rotation, 1.0, 1.0, 0.0)
+        glTranslatef(10, 10, self.z)
+        glRotatef(self.rotation_x, 1.0, 0, 0)
+        glRotatef(self.rotation_y, 0, 1.0, 0)
+        glRotatef(self.rotation_z, 0, 0, 1.0)
+        glTranslatef(-10, -10, -2)
+
         glBindTexture(GL_TEXTURE_2D, self.texArr[18])
         glBegin(GL_QUADS)
         glNormal3f(0, 0, 1)
@@ -103,18 +112,62 @@ class Dice():
         glEnd()
         glPopMatrix()
 
+        glutPostRedisplay()
         # 높이 조절하는부분을 쓰레드로 따로 빼거나 타이머 적용해서 gutPostRedisplay 넣어서 바로바로 보이도록해야함
-        if self.z >= 0:
-            self.z -= 0.15
-            self.rotation -= 2
-            glutPostRedisplay()
-            time.sleep(0.01)
-        else:
+
+        global isTop
+        global isGround
+        if self.rolling == True:
+            if self.z <= 14 and isTop == 0:
+                self.z += 0.25
+                self.rotation_x += 45
+                self.rotation_y += 45
+                self.rotation_z += 45
+                print(self.z)
+                if self.z >= 14:
+                    isTop = 1
+            if isTop == 1 and isGround == 0:
+                self.z -= 0.25
+                self.rotation_x -= 45
+                self.rotation_y -= 45
+                self.rotation_z -= 45
+
+                print(self.z)
+                if self.z == 2:
+                    if self.value == 1:
+                        self.rotation_x = 0
+                        self.rotation_y = 180
+                        self.rotation_z = 0
+                    elif self.value == 2:
+                        self.rotation_x = 270
+                        self.rotation_y = 270
+                        self.rotation_z = 0
+                    elif self.value == 3:
+                        self.rotation_x = 90
+                        self.rotation_y = 90
+                        self.rotation_z = 90
+                    elif self.value == 4:
+                        self.rotation_x = 90
+                        self.rotation_y = 0
+                        self.rotation_z = 0
+                    elif self.value == 113:
+                        self.rotation_x = 0
+                        self.rotation_y = 90
+                        self.rotation_z = 0
+                    elif self.value == 6:
+                        self.rotation_x = 0
+                        self.rotation_y = 0
+                        self.rotation_z = 0
+                    isGround = 1
+        if isGround == 1:
             self.rolling = False
+            isTop = 0
+            isGround = 0
+        glutPostRedisplay()
 
     def roll(self):
+        global isTop
+        global isGround
         self.rolling = True
-        self.z += 8.0
-        self.rotation += 120
         self.value = random.randrange(1, 7)
         return self.value
