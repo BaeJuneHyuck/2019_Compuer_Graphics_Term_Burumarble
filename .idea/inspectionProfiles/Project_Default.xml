@@ -9,6 +9,9 @@
           <option value="code.Game.Dice" />
           <option value="code.Game.Play_State" />
           <option value="code.Game.Character" />
+          <option value="Project.code.Game.Character" />
+          <option value="Project.code.Game.Board" />
+          <option value="Project.code.Game.Dice" />
         </list>
       </option>
     </inspection_tool>
