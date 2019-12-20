@@ -170,7 +170,7 @@ class GameManager():
 
         # character setting
         for player_no in range(4):
-            self.characters.append(Character(player_no, player_no))
+            self.characters.append(Character(self, player_no, player_no))
 
         for build_no in range(16):
             self.buildings.append((Building(build_no, self.texArr)))
@@ -231,7 +231,13 @@ class GameManager():
                 self.buildings[pos].player = self.current_turn
                 # 주인 없는땅 = 내 건물 생성
             else:
+                # 주인이 있는땅 밟음
                 self.player[self.current_turn].money -= 1000
+                player_owner = self.buildings[pos].player
+                self.player[player_owner].money += 1000
+                if self.player[self.current_turn].money == 0:
+                    #파산
+                    self.player[self.current_turn].alive = False
             self.stage = 0
             self.current_turn = (self.current_turn + 1) % 4
 
@@ -251,5 +257,6 @@ class GameManager():
 
 class Player():
     def __init__(self, number):
-        self.money = 50000 * (number + 1)
+        self.money = 5000
         self.number = number
+        self.alive = True

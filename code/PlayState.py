@@ -97,7 +97,7 @@ class PlayState():
         gluLookAt(0, 0, 28, 0, 0, 0, 0, 1, 0)
         self.goldTextureSpace()
         self.pictureSpace()
-        glColor3f(102/255, 102/255, 1)
+        glColor3f(0.99, 0.65, 0.01)
         self.nameSpace()
         self.goldNumSpace()
 
@@ -116,7 +116,7 @@ class PlayState():
         gluLookAt(0, 0, 28, 0, 0, 0, 0, 1, 0)
         self.goldTextureSpace()
         self.pictureSpace()
-        glColor3f(0.99, 0.65, 0.01)
+        glColor3f(0.4, 0.4, 1.0)
         self.nameSpace()
         self.goldNumSpace()
 
@@ -136,7 +136,7 @@ class PlayState():
         gluLookAt(0, 0, 28, 0, 0, 0, 0, 1, 0)
         self.goldTextureSpace()
         self.pictureSpace()
-        glColor3f(1, 102/255, 102/255)
+        glColor3f(0, 0.6, 0)
         self.nameSpace()
         self.goldNumSpace()
 
@@ -154,7 +154,7 @@ class PlayState():
         gluLookAt(0, 0, 28, 0, 0, 0, 0, 1, 0)
         self.goldTextureSpace()
         self.pictureSpace()
-        glColor3f(0, 153 / 255, 0)
+        glColor3f(1.0, 0.4, 0.4)
         self.nameSpace()
         self.goldNumSpace()
 

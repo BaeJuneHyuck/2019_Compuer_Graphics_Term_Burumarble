@@ -7,7 +7,8 @@ import time
 class Character():
     """ 플레이어가 가지고 있는 게임말 """
 
-    def __init__(self, type, player):
+    def __init__(self,game, type, player):
+        self.game = game
         self.pos = 0
         self.x, self.y = self.getCord(0)
         self.nextx, self.nexty, self.movex, self.movey = 0, 0, 0, 0
@@ -78,7 +79,10 @@ class Character():
 
     def draw(self):
         if (self.nextmove > 0 and self.animation == 0):  # 애니메이션 재생(한칸 이동)이 끝낫지만 아직 더 이동해야한다면
-            self.pos = (self.pos + 1) % 16  # pos 을 증가시키고 mov 감소
+            self.pos = self.pos + 1  # pos 을 증가시키고 mov 감소
+            if self.pos/16 >= 1:
+                self.pos = self.pos % 16 # 한바퀴 돌앗으므로 돈 주기
+                self.game.player[self.player].money += 2000
             self.nextmove -= 1
             self.animation = 1  # 다음 한칸을 이동하는 애니메이션 시작
             self.nextx, self.nexty = self.getCord(self.pos)  # 다음 가야할 좌표를 설정
