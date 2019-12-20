@@ -20,7 +20,7 @@ class GameManager():
     def __init__(self):
         self.prev_click_x = 0
         self.prev_click_y = 0
-        self.board = []
+        self.boards = []
         self.buildings = []
         self.dice = None
         self.current_turn = 0
@@ -82,17 +82,18 @@ class GameManager():
 
         # draw character
         glDisable(GL_TEXTURE_2D)
-        for index in range(4):
-            self.characters[index].draw()
+        for character in self.characters:
+            if character.alive:
+                character.draw()
         glEnable(GL_TEXTURE_2D)
 
         # draw building
         glEnable(GL_TEXTURE_2D)
-        for index in range(len(self.buildings)):
-            self.buildings[index].draw()
+        for building in self.buildings:
+            building.draw()
         # draw map
-        for index in range(16):
-            self.board[index].draw()
+        for board in self.boards:
+            board.draw()
         glPopMatrix()
 
         # double 버퍼 사용, glFlush() 대신 GLUTSwapBuffers()써서 깜빡거림 제거
@@ -153,22 +154,22 @@ class GameManager():
 
     def gameInit(self):
         # make game board 0~16
-        self.board.append(Board(0, 1, "정문", self.texArr))
-        self.board.append(Board(1, 0, "넉터", self.texArr))
-        self.board.append(Board(2, 0, "제6 공학관", self.texArr))
-        self.board.append(Board(3, 0, "인문관", self.texArr))
-        self.board.append(Board(4, 0, "대학본부", self.texArr))
-        self.board.append(Board(5, 0, "제2 공학관", self.texArr))
-        self.board.append(Board(6, 0, "문창회관", self.texArr))
-        self.board.append(Board(7, 0, "자연대 연구실험동", self.texArr))
-        self.board.append(Board(8, 0, "새벽벌도서관", self.texArr))
-        self.board.append(Board(9, 0, "사회관", self.texArr))
-        self.board.append(Board(10, 0, "금정회관", self.texArr))
-        self.board.append(Board(11, 0, "법학관", self.texArr))
-        self.board.append(Board(12, 0, "테니스장", self.texArr))
-        self.board.append(Board(13, 0, "제 1도서관", self.texArr))
-        self.board.append(Board(14, 0, "무지개문", self.texArr))
-        self.board.append(Board(15, 0, "건설관", self.texArr))
+        self.boards.append(Board(0, 1, "정문", self.texArr))
+        self.boards.append(Board(1, 0, "넉터", self.texArr))
+        self.boards.append(Board(2, 0, "제6 공학관", self.texArr))
+        self.boards.append(Board(3, 0, "인문관", self.texArr))
+        self.boards.append(Board(4, 0, "대학본부", self.texArr))
+        self.boards.append(Board(5, 0, "제2 공학관", self.texArr))
+        self.boards.append(Board(6, 0, "문창회관", self.texArr))
+        self.boards.append(Board(7, 0, "자연대 연구실험동", self.texArr))
+        self.boards.append(Board(8, 0, "새벽벌도서관", self.texArr))
+        self.boards.append(Board(9, 0, "사회관", self.texArr))
+        self.boards.append(Board(10, 0, "금정회관", self.texArr))
+        self.boards.append(Board(11, 0, "법학관", self.texArr))
+        self.boards.append(Board(12, 0, "테니스장", self.texArr))
+        self.boards.append(Board(13, 0, "제 1도서관", self.texArr))
+        self.boards.append(Board(14, 0, "무지개문", self.texArr))
+        self.boards.append(Board(15, 0, "건설관", self.texArr))
 
         self.dice = Dice(self.texArr)
 
@@ -240,14 +241,20 @@ class GameManager():
                 # 주인 없는땅 = 내 건물 생성
             else:
                 # 주인이 있는땅 밟음
-                self.player[self.current_turn].money -= 1000
+                self.player[self.current_turn].money -= 5000
                 player_owner = self.buildings[pos].player
-                self.player[player_owner].money += 1000
-                if self.player[self.current_turn].money == 0:
-                    #파산
+                self.player[player_owner].money += 5000
+                if self.player[self.current_turn].money <= 0:
+                    #  파산한 플레이어는 캐릭터와 건물이 삭제되고 매번 턴 확인시 스킵됩니다.
+                    print("player die", self.current_turn)
                     self.player[self.current_turn].alive = False
+                    self.characters[self.current_turn].alive = False
+                    for building in self.buildings:
+                        if building.player == self.current_turn:
+                            building.player = -1
             self.stage = 0
-            self.current_turn = (self.current_turn + 1) % 4
+            self.current_turn = self.nextPlayer()
+
 
     def checkDice(self):
         # 스레드로 실행, 메인 함수랑 따로 계속 주사위를 체크. 땅에 닿으면 nextStage를 호출함
@@ -261,6 +268,13 @@ class GameManager():
             time.sleep(0.1)
         self.stage += 1
         self.nextStage()
+
+    def nextPlayer(self):
+        nextTurn = (self.current_turn + 1) % 4
+        while self.player[nextTurn].alive == False:
+            nextTurn = (nextTurn + 1) % 4
+        return nextTurn
+
 
 
 class Player():

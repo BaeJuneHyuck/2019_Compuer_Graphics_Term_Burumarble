@@ -91,8 +91,10 @@ class PlayState():
         gluLookAt(0, 0, 28, 0, 0, 0, 0, 1, 0)
         self.goldTextureSpace()
         '''해골 부분'''
-        #glBindTexture(GL_TEXTURE_2D, self.texArr[33])
-        glBindTexture(GL_TEXTURE_2D, self.texArr[30])
+        if not self.game.player[0].alive:
+            glBindTexture(GL_TEXTURE_2D, self.texArr[33])
+        else:
+            glBindTexture(GL_TEXTURE_2D, self.texArr[30])
         self.pictureSpace()
         glColor3f(0.99, 0.65, 0.01)
         self.nameSpace()
@@ -112,7 +114,11 @@ class PlayState():
         glPushMatrix()
         gluLookAt(0, 0, 28, 0, 0, 0, 0, 1, 0)
         self.goldTextureSpace()
-        glBindTexture(GL_TEXTURE_2D, self.texArr[29])
+        if not self.game.player[1].alive:
+            glBindTexture(GL_TEXTURE_2D, self.texArr[33])
+        else:
+            glBindTexture(GL_TEXTURE_2D, self.texArr[29])
+
         self.pictureSpace()
         glColor3f(0.4, 0.4, 1.0)
         self.nameSpace()
@@ -133,7 +139,11 @@ class PlayState():
         glPushMatrix()
         gluLookAt(0, 0, 28, 0, 0, 0, 0, 1, 0)
         self.goldTextureSpace()
-        glBindTexture(GL_TEXTURE_2D, self.texArr[32])
+        if not self.game.player[2].alive:
+            glBindTexture(GL_TEXTURE_2D, self.texArr[33])
+        else:
+            glBindTexture(GL_TEXTURE_2D, self.texArr[32])
+
         self.pictureSpace()
         glColor3f(0, 0.6, 0)
         self.nameSpace()
@@ -152,7 +162,10 @@ class PlayState():
         glPushMatrix()
         gluLookAt(0, 0, 28, 0, 0, 0, 0, 1, 0)
         self.goldTextureSpace()
-        glBindTexture(GL_TEXTURE_2D, self.texArr[31])
+        if not self.game.player[3].alive:
+            glBindTexture(GL_TEXTURE_2D, self.texArr[33])
+        else:
+            glBindTexture(GL_TEXTURE_2D, self.texArr[31])
         self.pictureSpace()
         glColor3f(1.0, 0.4, 0.4)
         self.nameSpace()
@@ -189,17 +202,20 @@ class PlayState():
 
     def drawGoldNum(self, glodNum):
         glRasterPos3f(0, -5, 0.7)
+        glColor3f(1, 1, 1)
         for string in glodNum:
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ctypes.c_int(ord(string)))
 
     def drawPlayName(self, playerName):
         glRasterPos3f(-5, 10, 0.7)
+        glColor3f(1, 1, 1)
         for string in playerName:
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ctypes.c_int(ord(string)))
 
     def drawGoldName(self):
         glodName = "GOLD"
         glRasterPos3f(0, 4, 0.7)
+        glColor3f(1, 1, 1)
         for string in glodName:
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ctypes.c_int(ord(string)))
 

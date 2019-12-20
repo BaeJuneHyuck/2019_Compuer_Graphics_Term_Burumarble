@@ -15,7 +15,7 @@ class Character():
         self.type = type
         self.player = player
         self.color = [0.99, 0.65, 0.01, 0.4, 0.4, 1.0, 0, 0.6, 0, 1.0, 0.4, 0.4]
-
+        self.alive = True
         self.direction = 0
 
         # obj 파일 정보
