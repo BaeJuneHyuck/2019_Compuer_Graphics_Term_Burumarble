@@ -11,7 +11,7 @@ class Building():
         self.player = -1
         self.texArr = texArr
         self.z = 8
-        self.color = [0.6, 0.6, 0.2, 0.4, 0.4, 1.0, 0, 0.6, 0, 1.0, 0.4, 0.4]
+        self.color = [0.99, 0.65, 0.01, 0.4, 0.4, 1.0, 0, 0.6, 0, 1.0, 0.4, 0.4]
         self.direction = 0
         self.isSet = False
         if (pos >= 0 and pos < 5):

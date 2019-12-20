@@ -91,25 +91,6 @@ class PlayState():
     # 플레이어 스테이터스 화면 그리기
     def draw(self):
 
-        #왼쪽 하단 스테이터스
-        glViewport(0, 0, 200, 100)
-        glPushMatrix()
-        gluLookAt(0, 0, 28, 0, 0, 0, 0, 1, 0)
-        self.goldTextureSpace()
-        self.pictureSpace()
-        glColor3f(153/255, 153/255, 51/255)
-        self.nameSpace()
-        self.goldNumSpace()
-
-
-        playerName = "Play2"
-        self.drawPlayName(playerName)
-        self.drawGoldName()
-        glodNum = str(self.game.player[1].money)
-        self.drawGoldNum(glodNum)
-
-        glPopMatrix()
-
         #왼쪽 상단 스테이터스
         glViewport(0, 700, 200, 100)
         glPushMatrix()
@@ -129,23 +110,25 @@ class PlayState():
 
         glPopMatrix()
 
-        #오른쪽 하단 스테이터스
-        glViewport(600, 0, 200, 100)
+        #왼쪽 하단 스테이터스
+        glViewport(0, 0, 200, 100)
         glPushMatrix()
         gluLookAt(0, 0, 28, 0, 0, 0, 0, 1, 0)
         self.goldTextureSpace()
         self.pictureSpace()
-        glColor3f(0, 153/255, 0)
+        glColor3f(0.99, 0.65, 0.01)
         self.nameSpace()
         self.goldNumSpace()
 
-        playerName = "Play4"
+
+        playerName = "Play2"
         self.drawPlayName(playerName)
         self.drawGoldName()
-        glodNum = str(self.game.player[3].money)
+        glodNum = str(self.game.player[1].money)
         self.drawGoldNum(glodNum)
 
         glPopMatrix()
+
 
         #오른쪽 상단 스테이터스
         glViewport(600, 700, 200, 100)
@@ -165,7 +148,23 @@ class PlayState():
         glColor3f(1, 1, 1)
         glPopMatrix()
 
+        # 오른쪽 하단 스테이터스
+        glViewport(600, 0, 200, 100)
+        glPushMatrix()
+        gluLookAt(0, 0, 28, 0, 0, 0, 0, 1, 0)
+        self.goldTextureSpace()
+        self.pictureSpace()
+        glColor3f(0, 153 / 255, 0)
+        self.nameSpace()
+        self.goldNumSpace()
 
+        playerName = "Play4"
+        self.drawPlayName(playerName)
+        self.drawGoldName()
+        glodNum = str(self.game.player[3].money)
+        self.drawGoldNum(glodNum)
+
+        glPopMatrix()
 
 
         # 버튼

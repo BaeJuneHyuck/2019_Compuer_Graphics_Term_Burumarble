@@ -230,10 +230,8 @@ class GameManager():
             if self.buildings[pos].player == -1:
                 self.buildings[pos].player = self.current_turn
                 # 주인 없는땅 = 내 건물 생성
-                pass
             else:
                 self.player[self.current_turn].money -= 1000
-
             self.stage = 0
             self.current_turn = (self.current_turn + 1) % 4
 

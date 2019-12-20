@@ -13,7 +13,7 @@ class Character():
         self.nextx, self.nexty, self.movex, self.movey = 0, 0, 0, 0
         self.type = type
         self.player = player
-        self.color = [0.6, 0.6, 0.2, 0.4, 0.4, 1.0, 0, 0.6, 0, 1.0, 0.4, 0.4]
+        self.color = [0.99, 0.65, 0.01, 0.4, 0.4, 1.0, 0, 0.6, 0, 1.0, 0.4, 0.4]
 
         self.direction = 0
 
