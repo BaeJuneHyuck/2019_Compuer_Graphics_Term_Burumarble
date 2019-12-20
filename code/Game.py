@@ -114,7 +114,9 @@ class GameManager():
         # 16 나무 텍스처
         # 17 굴리기 버튼 텍스쳐
         # 18~ 23 : 주사위 1~6까지
-        self.texArr = glGenTextures(25)
+        # 25 : state 창
+        # 26 : gold 사진 (금화 사진)
+        self.texArr = glGenTextures(27)
         for i in range(0, 16):
             if i <= 9:
                 path = "texture/board_0" + str(i) + ".jpg"
@@ -124,11 +126,12 @@ class GameManager():
         self.setTexture(self.texArr, 16, "texture/wood.jpg", GL_RGB)
         self.setTexture(self.texArr, 17, "texture/dice_roll.jpg", GL_RGB)
         for i in range(18, 24):
-            path = "texture/dice_" + str(i-17) + ".jpg"
+            path = "texture/dice_" + str(i - 17) + ".jpg"
             self.setTexture(self.texArr, i, path, GL_RGB)
+        self.setTexture(self.texArr, 25, "texture/basicState.png", GL_RGB)
+        self.setTexture(self.texArr, 26, "texture/gold.jpg", GL_RGB)
         # state screen
         self.state = PlayState(self.camera, self.x_resolution, self.y_resolution, self.texArr)
-
     def gameInit(self):
         # make game board 0~16
         self.board.append(Board(0, 1, "정문", self.texArr))
