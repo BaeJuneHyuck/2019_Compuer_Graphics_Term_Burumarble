@@ -108,7 +108,7 @@ class GameManager():
 
     def GLInit(self):
         # clear color setting
-        glClearColor(0, 0, 1, 0)
+        glClearColor(0.98, 0.92, 0.84, 0)
         glEnable(GL_COLOR_MATERIAL)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_TEXTURE_2D)

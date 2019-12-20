@@ -10,6 +10,7 @@ class Building():
         self.pos = pos
         self.player = -1
         self.texArr = texArr
+        self.z = 8
         self.color = [0.6, 0.6, 0.2, 0.4, 0.4, 1.0, 0, 0.6, 0, 1.0, 0.4, 0.4]
         self.direction = 0
         self.isSet = False
@@ -47,6 +48,8 @@ class Building():
         glVertex3f(-1 + moveX, -1 + moveY, 0.5 + moveZ)
         glVertex3f(-1 + moveX, 1 + moveY, 0.5 + moveZ)
         glVertex3f(moveX, moveY, 2 + moveZ)
+        if(self.z > 2.5):
+            self.z -= 0.25
         glEnd()
 
         # 정면 삼각형
@@ -147,5 +150,5 @@ class Building():
         if self.player == -1: # 아직 소유주가 없다면
             pass
         else:
-            self.firstBuilding(self.x,self.y,2.5) # 그릴필요없지
+            self.firstBuilding(self.x,self.y,self.z) # 그릴필요없지
 
