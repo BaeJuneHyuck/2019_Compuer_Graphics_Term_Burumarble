@@ -3,6 +3,7 @@ from Board import *
 from Dice import *
 from PlayState import *
 from Character import *
+from Building import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
@@ -85,6 +86,12 @@ class GameManager():
             self.characters[index].draw()
         glEnable(GL_TEXTURE_2D)
 
+        # draw building
+        glDisable(GL_TEXTURE_2D)
+        for index in range(len(self.building)):
+            self.building[index].draw()
+        glEnable(GL_TEXTURE_2D)
+
         # draw map
         for index in range(16):
             self.board[index].draw()
@@ -131,8 +138,10 @@ class GameManager():
             self.setTexture(self.texArr, i, path, GL_RGB)
         self.setTexture(self.texArr, 25, "texture/basicState.png", GL_RGB)
         self.setTexture(self.texArr, 26, "texture/gold.jpg", GL_RGB)
+
         # state screen
         self.state = PlayState(self, self.camera, self.x_resolution, self.y_resolution, self.texArr)
+
     def gameInit(self):
         # make game board 0~16
         self.board.append(Board(0, 1, "정문", self.texArr))
@@ -162,6 +171,9 @@ class GameManager():
         for player_no in range(4):
             self.characters.append(Character(player_no, player_no))
 
+        for build_no in range(16):
+            self.building.append((Building(0, player_no)))
+
     def gameStart(self):
         glutInit()
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
@@ -185,7 +197,6 @@ class GameManager():
             print("click x={}, y={}".format(x, y))
             print("current turn = {}, current stage = {}".format(self.current_turn, self.stage))
             if x >= 340 and x < 460 and y >= 720 and self.stage == 0 and not self.dice.rolling:
-                print("dice button click!!")
                 self.nextStage()
 
     def mouseMove(self, current_x, current_y):
@@ -209,33 +220,29 @@ class GameManager():
         # 주사위 굴리기전, 이동애니메이션(시점변경)중, 이동후액션(시점복귀), 다시 주사위 굴리기전(플레이어 변경)
         if self.stage == 0:
             self.dice_value = self.dice.roll()
-#            threading.Timer(1.5, self.afterDice).start()
             threading.Thread(target=self.checkDice).start()
         elif self.stage == 1:
-            self.characters[self.current_turn].move(self.dice_value)
+            self.characters[self.current_turn].setmove(self.dice_value)
             threading.Thread(target=self.checkMove).start()
         elif self.stage == 2:
             pass
 
     def checkDice(self):
         # 스레드로 실행, 메인 함수랑 따로 계속 주사위를 체크. 땅에 닿으면 nextStage를 호출함
-        print("dice running")
-        while(self.dice.rolling == True):
+        while (self.dice.rolling == True):
             time.sleep(0.1)
             pass
-        print("dice end")
         self.stage += 1
         self.nextStage()
 
     def checkMove(self):
-        print("char moving")
         while (self.characters[self.current_turn].moving == True):
             time.sleep(0.1)
-        print("char move end")
         self.stage += 1
         self.nextStage()
 
+
 class Player():
     def __init__(self, number):
-        self.money = 50000*(number+1)
+        self.money = 50000 * (number + 1)
         self.number = number

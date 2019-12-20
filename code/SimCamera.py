@@ -3,6 +3,7 @@ from OpenGL.GLU import *
 from math import *
 import numpy as np
 
+
 class Camera:
 
     def __init__(self):  # constructor
@@ -71,7 +72,6 @@ class Camera:
         # 회전과 줌인을 한꺼번에 하는식을 드디어 구했다
         self.loc[0] = 5 * cos(radians(self.angle)) + 25 * self.zoom * sin(radians(self.angle)) + 10
         self.loc[1] = 5 * sin(radians(self.angle)) - 25 * self.zoom * cos(radians(self.angle)) + 10
-        print(self.zoom)
         self.applyCamera()
 
     def reset(self):
