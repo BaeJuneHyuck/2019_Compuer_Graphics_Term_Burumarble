@@ -20,6 +20,7 @@ class GameManager():
         self.prev_click_x = 0
         self.prev_click_y = 0
         self.board = []
+        self.building = []
         self.dice = None
         self.current_turn = 0
         self.camera = Camera()
@@ -131,7 +132,7 @@ class GameManager():
         self.setTexture(self.texArr, 25, "texture/basicState.png", GL_RGB)
         self.setTexture(self.texArr, 26, "texture/gold.jpg", GL_RGB)
         # state screen
-        self.state = PlayState(self.camera, self.x_resolution, self.y_resolution, self.texArr)
+        self.state = PlayState(self, self.camera, self.x_resolution, self.y_resolution, self.texArr)
     def gameInit(self):
         # make game board 0~16
         self.board.append(Board(0, 1, "정문", self.texArr))
@@ -183,7 +184,7 @@ class GameManager():
             self.prev_click_y = y
             print("click x={}, y={}".format(x, y))
             print("current turn = {}, current stage = {}".format(self.current_turn, self.stage))
-            if x >= 340 and x < 460 and y >= 720 and self.stage == 0:
+            if x >= 340 and x < 460 and y >= 720 and self.stage == 0 and not self.dice.rolling:
                 print("dice button click!!")
                 self.nextStage()
 
@@ -211,7 +212,8 @@ class GameManager():
 #            threading.Timer(1.5, self.afterDice).start()
             threading.Thread(target=self.checkDice).start()
         elif self.stage == 1:
-            threading.Thread(target=self.characters[self.current_turn].move(self.dice_value)).start()
+            self.characters[self.current_turn].move(self.dice_value)
+            threading.Thread(target=self.checkMove).start()
         elif self.stage == 2:
             pass
 
@@ -229,12 +231,11 @@ class GameManager():
         print("char moving")
         while (self.characters[self.current_turn].moving == True):
             time.sleep(0.1)
-            pass
         print("char move end")
         self.stage += 1
         self.nextStage()
 
 class Player():
     def __init__(self, number):
-        self.money = 0
+        self.money = 50000*(number+1)
         self.number = number

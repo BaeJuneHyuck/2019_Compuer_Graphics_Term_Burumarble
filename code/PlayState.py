@@ -8,7 +8,8 @@ import numpy as np
 
 class PlayState():
 
-    def __init__(self, _camera, w, h, textures):
+    def __init__(self, game, _camera, w, h, textures):
+        self.game = game
         self.camera = _camera;
         self.width = w
         self.height = h
@@ -104,7 +105,7 @@ class PlayState():
         playerName = "Play2"
         self.drawPlayName(playerName)
         self.drawGoldName()
-        glodNum = "100,000,000"
+        glodNum = str(self.game.player[1].money)
         self.drawGoldNum(glodNum)
 
         glPopMatrix()
@@ -123,7 +124,7 @@ class PlayState():
         playerName = "Play1"
         self.drawPlayName(playerName)
         self.drawGoldName()
-        glodNum = "100,000,000"
+        glodNum = str(self.game.player[0].money)
         self.drawGoldNum(glodNum)
 
         glPopMatrix()
@@ -141,7 +142,7 @@ class PlayState():
         playerName = "Play4"
         self.drawPlayName(playerName)
         self.drawGoldName()
-        glodNum = "100,000,000"
+        glodNum = str(self.game.player[3].money)
         self.drawGoldNum(glodNum)
 
         glPopMatrix()
@@ -159,7 +160,7 @@ class PlayState():
         playerName = "Play3"
         self.drawPlayName(playerName)
         self.drawGoldName()
-        glodNum = "100,000,000"
+        glodNum = str(self.game.player[2].money)
         self.drawGoldNum(glodNum)
         glColor3f(1, 1, 1)
         glPopMatrix()
