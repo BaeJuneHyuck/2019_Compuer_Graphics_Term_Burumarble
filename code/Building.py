@@ -1,57 +1,123 @@
+from OpenGL.GLUT import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
-from OpenGL.GLUT import *
-import time
 
-class Building():
-    """ 플레이어가 가지고 있는 건물 """
-    def __init__(self, pos, player):
-        self.pos = pos
-        self. player = player
-        self.color = [0.6, 0.6, 0.2, 0.4, 0.4, 1.0, 0,0.6, 0, 1.0, 0.4, 0.4]
+class Building() :
+    vertexQuadArray = [(4.0, 4.0, 4.0), (4, -4, 4), (-4, -4, 4), (-4, 4, 4), (4, 4, -4), (4, -4, -4), (-4, -4, -4),
+                       (-4, 4, -4)]
+    vertexTraArray = [(5, 5, 5), (-5, 5, 5), (-5, 5, -5), (5, 5, -5), (0, 5, 0)]
+    def __init__(self, color, texArr):
+        self.color = color
+        self.texArr = texArr
+
+    # 1번 땅이 6,2,2.5 이다.
+    # moveZ 에 2.5를 넣으면 딱 땅바닥에 안착
+    # moveX 엥 +4 씩 하면 됨
+    # moveY 도 + 4 씩 하면 됨
+    def firstBuilding(self, moveX, moveY, moveZ):
+        # 정면 왼쪽 삼각형
+        glBegin(GL_TRIANGLES)
+        glColor3f(1, 1, 1)
+        glVertex3f(-1 + moveX, -1 + moveY, 0.5 + moveZ)
+        glVertex3f(-1 + moveX, 1 + moveY, 0.5 + moveZ)
+        glVertex3f(moveX, moveY, 2 + moveZ)
+        glEnd()
+
+        # 정면 삼각형
+        glBegin(GL_TRIANGLES)
+        glColor3f(1, 1, 1)
+        glVertex3f(1 + moveX, -1 + moveY, 0.5 + moveZ)
+        glVertex3f(-1 + moveX, -1 + moveY, 0.5 + moveZ)
+        glVertex3f(moveX, moveY, 2 + moveZ)
+        glEnd()
+
+        # 정면 오른쪽 삼각형
+        glBegin(GL_TRIANGLES)
+        glColor3f(1, 1, 1)
+        glVertex3f(1 + moveX, 1 + moveY, 0.5 + moveZ)
+        glVertex3f(1 + moveX, -1 + moveY, 0.5 + moveZ)
+        glVertex3f(moveX, moveY, 2 + moveZ)
+        glEnd()
+
+        # 정면 맞은편 삼각형
+        glBegin(GL_TRIANGLES)
+        glColor3f(1, 1, 1)
+        glVertex3f(-1 + moveX, 1 + moveY, 0.5 + moveZ)
+        glVertex3f(1 + moveX, 1 + moveY, 0.5 + moveZ)
+        glVertex3f(moveX, moveY, 2 + moveZ)
+        glEnd()
+
+        # 건물 윗면
+        glBegin(GL_QUADS)
+        glNormal3f(0.0, 0.0, 1)
+        glTexCoord2f(0.0, 0.0)
+        glVertex3f(-1 + moveX, 1 + moveY, 0.5 + moveZ)
+        glTexCoord2f(0.0, 1)
+        glVertex3f(-1 + moveX, -1 + moveY, 0.5 + moveZ)
+        glTexCoord2f(1, 1)
+        glVertex3f(1 + moveX, -1 + moveY, 0.5 + moveZ)
+        glTexCoord2f(1, 0.0)
+        glVertex3f(1 + moveX, 1 + moveY, 0.5 + moveZ)
+        glEnd()
+
+        # 건물 앞면 오른쪽 면
+        glBindTexture(GL_TEXTURE_2D, self.texArr[27])
+        glBegin(GL_QUADS)
+        glNormal3f(1, 0.0, 0.0)
+        glTexCoord2f(1, 0.0)
+        glVertex3f(0.75 + moveX, 0.75 + moveY, 0.5 + moveZ)
+        glTexCoord2f(0, 0)
+        glVertex3f(0.75 + moveX, -0.75 + moveY, 0.5 + moveZ)
+        glTexCoord2f(0, 1)
+        glVertex3f(0.75 + moveX, -0.75 + moveY, -0.5 + moveZ)
+        glTexCoord2f(1.0, 1.0)
+        glVertex3f(0.75 + moveX, 0.75 + moveY, -0.5 + moveZ)
+        glEnd()
+
+
+        # 건물 앞면 왼쪽
+        glBindTexture(GL_TEXTURE_2D, self.texArr[27])
+        glBegin(GL_QUADS)
+        glNormal3f(-0.5, 0.0, 0.0)
+        glTexCoord2f(0.0, 0.0)
+        glVertex3f(-0.75 + moveX, 0.75 + moveY, -0.5 + moveZ)
+        glTexCoord2f(0.0, 1)
+        glVertex3f(-0.75 + moveX, -0.75 + moveY, -0.5 + moveZ)
+        glTexCoord2f(1, 1)
+        glVertex3f(-0.75 + moveX, -0.75 + moveY, 0.5 + moveZ)
+        glTexCoord2f(1, 0.0)
+        glVertex3f(-0.75 + moveX, 0.75 + moveY, 0.5 + moveZ)
+        glEnd()
+
+        # 건물 앞면
+        glBindTexture(GL_TEXTURE_2D, self.texArr[27])
+        glBegin(GL_QUADS)
+        glNormal3f(0.0, -1, 0.0)
+        glTexCoord2f(0.0, 1)
+        glVertex3f(-0.75 + moveX, -0.75 + moveY, -0.5 + moveZ)
+        glTexCoord2f(0.0, 0.0)
+        glVertex3f(-0.75 + moveX, -0.75 + moveY, 0.5 + moveZ)
+        glTexCoord2f(1, 0.0)
+        glVertex3f(0.75 + moveX, -0.75 + moveY, 0.5 + moveZ)
+        glTexCoord2f(1, 1)
+        glVertex3f(0.75 + moveX, -0.75 + moveY, -0.5 + moveZ)
+        glEnd()
+
+        # 건물 앞면 맞은 편
+        glBindTexture(GL_TEXTURE_2D, self.texArr[27])
+        glBegin(GL_QUADS)
+        glNormal3f(0.0, 1, 0.0)
+        glTexCoord2f(0.0, 0.0)
+        glVertex3f(-0.75 + moveX, 0.75 + moveY, -0.5 + moveZ)
+        glTexCoord2f(0.0, 1)
+        glVertex3f(-0.75 + moveX, 0.75 + moveY, 0.5 + moveZ)
+        glTexCoord2f(1, 1)
+        glVertex3f(0.75 + moveX, 0.75 + moveY, 0.5 + moveZ)
+        glTexCoord2f(1, 0.0)
+        glVertex3f(0.75 + moveX, 0.75 + moveY, -0.5 + moveZ)
+        glEnd()
 
     def draw(self):
-        glPushMatrix()
-        x,y = self.getCord()
-        glTranslatef(x,y,0)
-        glRotatef(90, 1.0, 0, 0.0)
-
-        glColor3f(self.color[self.player * 3] , self.color[self.player * 3 + 1], self.color[self.player * 3 + 2])
-
-        # 빌딩 그리기
-
-        glPopMatrix()
-        glColor3f(1.0, 1.0 ,1.0)
-
-    def getCord(self):
-        x = 0
-        y = 0
-        if (self.pos >= 0 and self.pos < 5):
-            x = (self.pos + 0.5) * 4
-            y = 2
-
-        if (self.pos >= 5 and self.pos < 9):
-            x = 18
-            y = (self.pos - 3.5) * 4
-
-        if (self.pos >= 9 and self.pos < 13):
-            x = (self.pos - 7.5) * 16
-            y = 18
-
-        if (self.pos >= 13 and self.pos < 16):
-            x = 2
-            y = (self.pos - 11.5) * 16
-        return x,y
-
-    def building_animation(self, dice_value):
-        print("char{} move{}".format(self.player, dice_value))
-        self.moving = True
-
-        while(dice_value != 0 ):
-            print("move once")
-            self.pos += 1
-            dice_value -=1
-            glutPostRedisplay()
-
-        self.moving = False
+        #glTranslate(10,0,0)
+        self.firstBuilding(18,6,2.5)
 

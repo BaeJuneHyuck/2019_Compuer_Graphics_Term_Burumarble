@@ -86,11 +86,16 @@ class GameManager():
             self.characters[index].draw()
         glEnable(GL_TEXTURE_2D)
 
+        '''
         # draw building
         glDisable(GL_TEXTURE_2D)
         for index in range(len(self.building)):
             self.building[index].draw()
         glEnable(GL_TEXTURE_2D)
+        '''
+        # draw Building
+        Building(self.characters[0].color, self.texArr).draw()
+
 
         # draw map
         for index in range(16):
@@ -124,7 +129,8 @@ class GameManager():
         # 18~ 23 : 주사위 1~6까지
         # 25 : state 창
         # 26 : gold 사진 (금화 사진)
-        self.texArr = glGenTextures(27)
+        #27~28 : bulinding 사진
+        self.texArr = glGenTextures(29)
         for i in range(0, 16):
             if i <= 9:
                 path = "texture/board_0" + str(i) + ".jpg"
@@ -138,9 +144,11 @@ class GameManager():
             self.setTexture(self.texArr, i, path, GL_RGB)
         self.setTexture(self.texArr, 25, "texture/basicState.png", GL_RGB)
         self.setTexture(self.texArr, 26, "texture/gold.jpg", GL_RGB)
-
+        self.setTexture(self.texArr, 27, "texture/FistBuilding_Forward.jpg", GL_RGB)
+        self.setTexture(self.texArr, 28, "texture/FistBuilding_Side.jpg",GL_RGB)
         # state screen
         self.state = PlayState(self, self.camera, self.x_resolution, self.y_resolution, self.texArr)
+
 
     def gameInit(self):
         # make game board 0~16
