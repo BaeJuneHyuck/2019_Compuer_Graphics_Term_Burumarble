@@ -101,12 +101,13 @@ class PlayState():
         self.goldNumSpace()
 
 
-        playerName = "Play1"
+        playerName = "Player 1"
+        glColor3f(0, 0, 0)
         self.drawPlayName(playerName)
         self.drawGoldName()
         glodNum = str(self.game.player[0].money)
         self.drawGoldNum(glodNum)
-
+        glColor3f(1, 1, 1)
         glPopMatrix()
 
         #왼쪽 하단 스테이터스
@@ -125,12 +126,13 @@ class PlayState():
         self.goldNumSpace()
 
 
-        playerName = "Play2"
+        playerName = "Player 2"
+        glColor3f(0, 0, 0)
         self.drawPlayName(playerName)
         self.drawGoldName()
         glodNum = str(self.game.player[1].money)
         self.drawGoldNum(glodNum)
-
+        glColor3f(1, 1, 1)
         glPopMatrix()
 
 
@@ -149,7 +151,8 @@ class PlayState():
         self.nameSpace()
         self.goldNumSpace()
 
-        playerName = "Play3"
+        playerName = "Player 3"
+        glColor3f(0, 0, 0)
         self.drawPlayName(playerName)
         self.drawGoldName()
         glodNum = str(self.game.player[2].money)
@@ -171,12 +174,13 @@ class PlayState():
         self.nameSpace()
         self.goldNumSpace()
 
-        playerName = "Play4"
+        playerName = "Player 4"
+        glColor3f(0, 0, 0)
         self.drawPlayName(playerName)
         self.drawGoldName()
         glodNum = str(self.game.player[3].money)
         self.drawGoldNum(glodNum)
-
+        glColor3f(1, 1, 1)
         glPopMatrix()
 
 
@@ -202,20 +206,17 @@ class PlayState():
 
     def drawGoldNum(self, glodNum):
         glRasterPos3f(0, -5, 0.7)
-        glColor3f(1, 1, 1)
         for string in glodNum:
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ctypes.c_int(ord(string)))
 
     def drawPlayName(self, playerName):
         glRasterPos3f(-5, 10, 0.7)
-        glColor3f(1, 1, 1)
         for string in playerName:
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ctypes.c_int(ord(string)))
 
     def drawGoldName(self):
         glodName = "GOLD"
         glRasterPos3f(0, 4, 0.7)
-        glColor3f(1, 1, 1)
         for string in glodName:
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ctypes.c_int(ord(string)))
 
