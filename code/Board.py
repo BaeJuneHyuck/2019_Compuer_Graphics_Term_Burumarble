@@ -5,7 +5,6 @@ from OpenGL.GLUT import *
 class Board():
     """ 게임이 이뤄질 보드 """
     def __init__(self, pos, type,  text, textures):
-        super().__init__()
         self.texArr = textures
 
         # 시작지점 0 부터 끝지점 25 까지 순서대로 pos 번호 부여

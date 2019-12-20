@@ -7,7 +7,9 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
 
+import threading
 import numpy as np
+import time
 from PIL import Image
 
 
@@ -23,19 +25,17 @@ class GameManager():
         self.camera = Camera()
         self.player = []
         self.characters = []
-        self.char_moved = False
         self.x_resolution = 800
         self.y_resolution = 800
-
+        self.dice_value = 1
         # 각 플레이어의 턴을 스테이지로 나눠서 처리
-        # 주사위 굴리기전, 이동애니메이션(시점변경), 이동후액션(시점복귀)
+        # 주사위 굴리기전, 이동애니메이션(시점변경)중, 이동후액션(시점복귀), 다시 주사위 굴리기전(플레이어 변경)
         self.stage = 0
 
     def loadImage(self, imageName):
         img = Image.open(imageName)
         img_data = np.array(list(img.getdata()), np.uint8)
         return img.size[0], img.size[1], img_data
-
 
     def setTexture(self, texArr, idx, fileName, option):
         glBindTexture(GL_TEXTURE_2D, texArr[idx])
@@ -80,9 +80,8 @@ class GameManager():
 
         # draw character
         glDisable(GL_TEXTURE_2D)
-        if self.char_moved:
-            for index in range(4):
-                self.characters[index].draw()
+        for index in range(4):
+            self.characters[index].draw()
         glEnable(GL_TEXTURE_2D)
 
         # draw map
@@ -115,9 +114,7 @@ class GameManager():
         # 16 나무 텍스처
         # 17 굴리기 버튼 텍스쳐
         # 18~ 23 : 주사위 1~6까지
-        #25 : state 창
-        #26 : gold 사진 (금화 사진)
-        self.texArr = glGenTextures(27)
+        self.texArr = glGenTextures(25)
         for i in range(0, 16):
             if i <= 9:
                 path = "texture/board_0" + str(i) + ".jpg"
@@ -129,8 +126,6 @@ class GameManager():
         for i in range(18, 24):
             path = "texture/dice_" + str(i-17) + ".jpg"
             self.setTexture(self.texArr, i, path, GL_RGB)
-        self.setTexture(self.texArr, 25, "texture/basicState.png",GL_RGB)
-        self.setTexture(self.texArr, 26, "texture/gold.jpg", GL_RGB)
         # state screen
         self.state = PlayState(self.camera, self.x_resolution, self.y_resolution, self.texArr)
 
@@ -184,10 +179,10 @@ class GameManager():
             self.prev_click_x = x
             self.prev_click_y = y
             print("click x={}, y={}".format(x, y))
-            if x >= 340 and x < 460 and y >= 720:
-                print("button click!!")
-                self.dice.roll()
-                self.char_moved = not self.char_moved
+            print("current turn = {}, current stage = {}".format(self.current_turn, self.stage))
+            if x >= 340 and x < 460 and y >= 720 and self.stage == 0:
+                print("dice button click!!")
+                self.nextStage()
 
     def mouseMove(self, current_x, current_y):
         dx = self.prev_click_x - current_x
@@ -206,13 +201,35 @@ class GameManager():
         glutPostRedisplay()
 
     def nextStage(self):
+        # 각 플레이어의 턴을 스테이지로 나눠서 처리
+        # 주사위 굴리기전, 이동애니메이션(시점변경)중, 이동후액션(시점복귀), 다시 주사위 굴리기전(플레이어 변경)
         if self.stage == 0:
-            pass
-        elif self.stage == 0:
-            pass
-        elif self.stage == 0:
+            self.dice_value = self.dice.roll()
+#            threading.Timer(1.5, self.afterDice).start()
+            threading.Thread(target=self.checkDice).start()
+        elif self.stage == 1:
+            threading.Thread(target=self.characters[self.current_turn].move(self.dice_value)).start()
+        elif self.stage == 2:
             pass
 
+    def checkDice(self):
+        # 스레드로 실행, 메인 함수랑 따로 계속 주사위를 체크. 땅에 닿으면 nextStage를 호출함
+        print("dice running")
+        while(self.dice.rolling == True):
+            time.sleep(0.1)
+            pass
+        print("dice end")
+        self.stage += 1
+        self.nextStage()
+
+    def checkMove(self):
+        print("char moving")
+        while (self.characters[self.current_turn].moving == True):
+            time.sleep(0.1)
+            pass
+        print("char move end")
+        self.stage += 1
+        self.nextStage()
 
 class Player():
     def __init__(self, number):

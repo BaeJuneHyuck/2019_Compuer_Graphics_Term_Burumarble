@@ -12,6 +12,7 @@ class Dice():
         self.z = 0.0
         self.rotation = 0.0
         self.textures = []
+        self.rolling = False
 
         # 주사위 텍스처 6장을 뽑아서 배열로 만듬
         # 주사위를 굴리면 값만큼 배열을 당김
@@ -108,8 +109,12 @@ class Dice():
             self.rotation -= 2
             glutPostRedisplay()
             time.sleep(0.01)
+        else:
+            self.rolling = False
 
     def roll(self):
+        self.rolling = True
         self.z += 8.0
         self.rotation += 120
         self.value = random.randrange(1, 7)
+        return self.value
