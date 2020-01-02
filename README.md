@@ -33,19 +33,24 @@
 python을 통해 main.py를 실행한다.
  
 ![Preview](https://github.com/BaeJuneHyuck/2019_Compuer_Graphics_Term_Burumarble/blob/master/capture/capture1.png?raw=true)
+
 <그림1 초기화면>
 
 게임을 처음 실행하면 위와 같은 화면을 볼 수 있다. 각 화면의 모서리에 플레이어의 이름과, 그림, 가지고 있는 돈이 출력된다. 화면 중앙은 게임이 진행되는 지도와 캐릭터들이 출력된다. 또한 마우스 드래그와 마우스 휠을 통해 시점을 움직이거나 확대할 수 있다.
  
  이제 각 플레이어는 화면 중앙 아래에 있는 주사위 버튼을 클릭하여 자신의 캐릭터를 움직일 수 있다. 주사위가 굴려지면 그 값만큼 캐릭터가 이동한다.
  ![Preview](https://github.com/BaeJuneHyuck/2019_Compuer_Graphics_Term_Burumarble/blob/master/capture/capture2.png?raw=true)
+ 
 <그림2 주사위 굴리기>
  
  ![Preview](https://github.com/BaeJuneHyuck/2019_Compuer_Graphics_Term_Burumarble/blob/master/capture/capture3.png?raw=true)
+ 
 <그림3 주사위만큼 이동 후 건물 생성> 
 
 ![Preview](https://github.com/BaeJuneHyuck/2019_Compuer_Graphics_Term_Burumarble/blob/master/capture/capture4.png?raw=true)
+
 <그림4 다른 플레이어가 산 건물에 이동, 파산>
+
 이동시 다른 플레이어가 구입한 건물에 이동하면 자신의 골드가 줄어든다. 돈이 0원이되면 파산하여 플레이어 그림이 해골그림으로 바뀌며 자신의 집이 모두 사라진다.
 
 # 클래스 개요
